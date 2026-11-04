@@ -26,8 +26,8 @@ DONATE_URL = get_env("DONATE_URL")
 # WISHLIST_URL = get_env("WISHLIST_URL")
 
 PERIODIC_LINKS = [
-    f"Телеграм канал: {TG_URL}",
-    f"Дискорд канал: {DISCORD_URL}",
+    f"Telegram: {TG_URL}",
+    f"Discord: {DISCORD_URL}",
     f"Поддержать стрим: {DONATE_URL}",
     # f"Вишлист: {WISHLIST_URL}",
 ]

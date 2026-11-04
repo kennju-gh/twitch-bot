@@ -9,4 +9,4 @@ class FollowComponent(commands.Component):
     @commands.Component.listener()
     async def event_follow(self, payload: eventsub.FollowEvent) -> None:
         channel = self.bot.create_partialuser(payload.broadcaster.id)
-        await channel.send_message(f"Спасибо за фоллов, {payload.user.name}!")
+        await channel.send_message(f"Спасибо за фоллоу, {payload.user.name}!")
