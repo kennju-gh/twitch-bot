@@ -1,10 +1,11 @@
-import asqlite
-import twitchio
 import logging
 
+import asqlite
+import twitchio
 from twitchio import eventsub
 from twitchio.ext import commands
 
+from .components.commands import CommandsComponent
 from .components.follow import FollowComponent
 from .components.timer import TimerComponent
 from .config import BOT_ID, CLIENT_ID, CLIENT_SECRET, OWNER_ID
@@ -24,10 +25,7 @@ class Bot(commands.AutoBot):
     async def setup_hook(self) -> None:
         await self.add_component(FollowComponent(self))
         await self.add_component(TimerComponent(self))
-        try:
-            await self.attempt_subscribe()
-        except Exception as e:
-            logging.warning(f"Subscription attempt in setup_hook: {e}")
+        await self.add_component(CommandsComponent(self))
 
     async def event_oauth_authorized(self, payload: twitchio.authentication.UserTokenPayload) -> None:
         await self.add_token(payload.access_token, payload.refresh_token)
