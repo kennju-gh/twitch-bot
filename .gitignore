@@ -13,3 +13,4 @@ wheels/
 
 # DB
 tokens.db
+*.tio.tokens.json
