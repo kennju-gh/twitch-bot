@@ -11,7 +11,7 @@ A Python-based Twitch chat bot built with TwitchIO 3
 ## Tech Stack
 
 - Python 3.14
-- TwitchIO
+- TwitchIO 3
 - uv (package manager)
 - Docker
 
