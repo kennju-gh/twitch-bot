@@ -1,5 +1,7 @@
 import asqlite
 import twitchio
+import logging
+
 from twitchio import eventsub
 from twitchio.ext import commands
 
@@ -9,20 +11,44 @@ from .config import BOT_ID, CLIENT_ID, CLIENT_SECRET, OWNER_ID
 
 
 class Bot(commands.AutoBot):
-    def __init__(self, *, token_database: asqlite.Pool, subs: list[eventsub.SubscriptionPayload]) -> None:
+    def __init__(self, *, token_database: asqlite.Pool) -> None:
         self.token_database = token_database
         super().__init__(
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             bot_id=BOT_ID,
             owner_id=OWNER_ID,
-            subscriptions=subs,
-            force_subscribe=True,
+            prefix="!",
         )
 
     async def setup_hook(self) -> None:
         await self.add_component(FollowComponent(self))
         await self.add_component(TimerComponent(self))
+        try:
+            await self.attempt_subscribe()
+        except Exception as e:
+            logging.warning(f"Subscription attempt in setup_hook: {e}")
 
     async def event_oauth_authorized(self, payload: twitchio.authentication.UserTokenPayload) -> None:
         await self.add_token(payload.access_token, payload.refresh_token)
+        try:
+            await self.attempt_subscribe()
+        except Exception as e:
+            logging.warning(f"Subscription attempt after auth: {e}")
+
+    async def attempt_subscribe(self) -> None:
+        subs = [
+            eventsub.ChatMessageSubscription(broadcaster_user_id=OWNER_ID, user_id=BOT_ID),
+            eventsub.ChannelFollowSubscription(
+                broadcaster_user_id=OWNER_ID,
+                moderator_user_id=BOT_ID
+            ),
+        ]
+        resp = await self.multi_subscribe(subs)
+        if resp.errors:
+            logging.warning("Failed to subscribe: %r", resp.errors)
+        else:
+            logging.info("Subscribed successfully")
+
+    async def event_ready(self) -> None:
+        logging.info(f"Bot is ready! Listeners count: {len(self._listeners)}")
