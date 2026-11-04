@@ -20,12 +20,14 @@ BOT_ID = get_env("BOT_ID")
 OWNER_ID = get_env("OWNER_ID")
 
 # Links
-SOCIALS_URL = get_env("SOCIALS_URL")
+TG_URL = get_env("TG_URL")
+DISCORD_URL = get_env("DISCORD_URL")
 DONATE_URL = get_env("DONATE_URL")
-WISHLIST_URL = get_env("WISHLIST_URL")
+# WISHLIST_URL = get_env("WISHLIST_URL")
 
 PERIODIC_LINKS = [
-    f"Соц.Сети: {SOCIALS_URL}",
+    f"Телеграм канал: {TG_URL}",
+    f"Дискорд канал: {DISCORD_URL}",
     f"Поддержать стрим: {DONATE_URL}",
-    f"Вишлист: {WISHLIST_URL}",
+    # f"Вишлист: {WISHLIST_URL}",
 ]
