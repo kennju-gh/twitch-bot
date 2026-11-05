@@ -44,9 +44,25 @@ class Bot(commands.AutoBot):
         ]
         resp = await self.multi_subscribe(subs)
         if resp.errors:
-            logging.warning("Failed to subscribe: %r", resp.errors)
+            for error in resp.errors:
+                if "409" in str(error) or "Conflict" in str(error):
+                    logging.info("Subscription already exists, skipping.")
+                else:
+                    logging.warning(f"Failed to subscribe: {error}")
         else:
             logging.info("Subscribed successfully")
 
     async def event_ready(self) -> None:
         logging.info(f"Bot is ready! Listeners count: {len(self._listeners)}")
+
+    async def event_command_error(self, payload) -> None:
+        if isinstance(payload.exception, commands.CommandOnCooldown):
+            user_name = payload.context.author.name if payload.context.author else "Unknown"
+            command_name = payload.context.command.name
+            logging.info(
+                f"Cooldown triggered: {user_name} tried to use !{command_name}. "
+                f"Wait {payload.exception.retry_after:.1f}s."
+            )
+            return
+
+        logging.error(f"Command error: {payload.exception}")
