@@ -60,7 +60,7 @@ class Bot(commands.AutoBot):
             user_name = payload.context.author.name if payload.context.author else "Unknown"
             command_name = payload.context.command.name
             logging.info(
-                f"Cooldown triggered: {user_name} tried to use !{command_name}. "
+                f"Cooldown triggered: {user_name} tried to use !{command_name}."
                 f"Wait {payload.exception.retry_after:.1f}s."
             )
             return

@@ -14,7 +14,7 @@ class CommandsComponent(commands.Component):
     async def discord_cmd(self, ctx: commands.Context) -> None:
         await ctx.reply(f"Discord: {DISCORD_URL}")
 
-    @commands.command(name="donate", aliases=["донат"])
+    @commands.command(name="donate", aliases=["донат", "трусы"])
     @commands.cooldown(rate=1, per=60, key=commands.BucketType.chatter)
     async def donate_cmd(self, ctx: commands.Context) -> None:
         await ctx.reply(f"Поддержать стрим: {DONATE_URL}")
