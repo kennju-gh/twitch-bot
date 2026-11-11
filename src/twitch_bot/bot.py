@@ -26,6 +26,7 @@ class Bot(commands.AutoBot):
         await self.add_component(FollowComponent(self))
         await self.add_component(TimerComponent(self))
         await self.add_component(CommandsComponent(self))
+        await self.attempt_subscribe()
 
     async def event_oauth_authorized(self, payload: twitchio.authentication.UserTokenPayload) -> None:
         await self.add_token(payload.access_token, payload.refresh_token)
