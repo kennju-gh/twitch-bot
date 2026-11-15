@@ -32,9 +32,9 @@ class TimerComponent(commands.Component):
 
         i = 0
         while True:
-            await asyncio.sleep(300)
+            await asyncio.sleep(180)
 
-            if self.message_count >= 2:
+            if self.message_count >= 1:
                 try:
                     await channel.send_message(sender=sender, message=PERIODIC_LINKS[i % len(PERIODIC_LINKS)])
                     logging.info(f"Timer message sent (messages before: {self.message_count})")
