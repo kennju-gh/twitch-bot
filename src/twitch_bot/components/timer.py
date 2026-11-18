@@ -32,7 +32,7 @@ class TimerComponent(commands.Component):
 
         i = 0
         while True:
-            await asyncio.sleep(180)
+            await asyncio.sleep(240)
 
             if self.message_count >= 1:
                 try:
